@@ -20,7 +20,9 @@ LightCyan='\033[1;36m'
 LightGray='\033[0;37m'
 White='\033[1;37m'
 
-rm *.out
+# po - programm output
+
+rm *.po
 py_files=`ls *.py`
 cpp_files=`ls *.cpp`
 index=0
@@ -28,7 +30,7 @@ if ((${#py_files} > 0))
 then
     for f in $(ls *.case)
     do
-        out="${f%%.*}.out"
+        out="${f%%.*}.po"
         cat $f | python3 $py_files >> $out
     done
 fi
@@ -37,16 +39,16 @@ if ((${#cpp_files} > 0))
 then
     for f in $(ls *.case)
     do
-        out="${f%%.*}.out"
+        out="${f%%.*}.po"
         cat $f | g++ -std=c++17 -g -O3 -lm $cpp_files >> $out
     done
 fi
 
 index=0
-for f in $(ls *.out)
+for f in $(ls *.po)
 do
     ((index++))
     out=$f
-    in="${f%%.*}.in"
+    in="${f%%.*}.out"
     cmp --silent $in $out && echo "${Green}( ${index} ) TEST OK${NC}" || echo "${RED}( ${index} ) TEST FAILED${NC}" #&& echo "${BrownOrange}---------> `cmp $file1 $file2`${NC}"
 done
